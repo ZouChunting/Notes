@@ -2,6 +2,7 @@ package leetcode;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 public class Solution2 {
@@ -164,6 +165,68 @@ public class Solution2 {
         }
     }
 
+    //31. 下一个排列
+    public void nextPermutation(int[] nums) {
+        int index=nums.length-2;
+        while (index>=0&&nums[index]>=nums[index+1]){
+            index--;
+        }
+        if(index>=0){
+            int j=nums.length-1;
+            while (j>=0&&nums[j]<=nums[index]){
+                j--;
+            }
+            swap(nums,index,j);
+        }
+        //翻转数组
+        reverse(nums,index+1,nums.length-1);
+    }
+    public void swap(int[] nums,int i,int j){
+        int tmp=nums[i];
+        nums[i]=nums[j];
+        nums[j]=tmp;
+    }
+    public void reverse(int[] nums,int i,int j){
+        while (i<j){
+            swap(nums,i,j);
+            i++;
+            j--;
+        }
+    }
+
+    //36. 有效的数独
+    public boolean isValidSudoku(char[][] board) {
+
+//        HashMap<Integer,Integer>[] row=new HashMap[9];
+//        HashMap<Integer,Integer>[] column=new HashMap[9];
+//        HashMap<Integer,Integer>[] box=new HashMap[9];
+
+        HashSet[] row=new HashSet[9];
+        HashSet[] column=new HashSet[9];
+        HashSet[] box=new HashSet[9];
+        for(int i=0;i<9;i++){
+            row[i]=new HashSet<>();
+            column[i]=new HashSet<>();
+            box[i]=new HashSet<>();
+        }
+
+        for(int i=0;i<9;i++){
+            for(int j=0;j<9;j++){
+                char num=board[i][j];
+                if(num!='.'){
+                    if(row[i].contains(num)||column[j].contains(num)||box[i/3*3+j/3].contains(num)){
+                        return false;
+                    }
+                    row[i].add(num);
+                    column[j].add(num);
+                    box[i/3*3+j/3].add(num);
+                }
+            }
+        }
+
+        return true;
+    }
+
     public static void main(String args[]){
         Solution2 solution2=new Solution2();
 
@@ -174,7 +237,13 @@ public class Solution2 {
 //        String[] words = {"ab","ba","ab","ba"};
 //        solution2.findSubstring("abaababbaba",words);
 
-        int[] nums={1,3,5,6};
-        solution2.searchInsert(nums,2);
+//        int[] nums={1,2,3};
+//        solution2.searchInsert(nums,2);
+//        solution2.nextPermutation(nums);
+//        for(int i=0;i<nums.length;i++){
+//            System.out.println(nums[i]);
+//        }
+        char[][] board=new char[9][];
+        solution2.isValidSudoku(board);
     }
 }
