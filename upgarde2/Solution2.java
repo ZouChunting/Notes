@@ -227,6 +227,55 @@ public class Solution2 {
         return true;
     }
 
+    //42. 接雨水
+    //[0,1,0,2,1,0,1,3,2,1,2,1]
+    public int trap(int[] height) {
+        int res=0;
+        int left=1;
+        int right=height.length-2;
+        int left_max=0;
+        int right_max=0;
+        while (left<=right){
+            left_max=Math.max(left_max,height[left-1]);
+            right_max=Math.max(right_max,height[right+1]);
+            if(left_max<right_max){
+                if(height[left]<left_max){
+                    res=res+(left_max-height[left]);
+                }
+                left++;
+            }else {
+                if(height[right]<right_max){
+                    res=res+(right_max-height[right]);
+                }
+                right--;
+            }
+        }
+        System.out.println(res);
+        return res;
+    }
+
+    //38. 报数
+    public String countAndSay(int n) {
+        //StringBuilder res=new StringBuilder("1");
+        String res="1";
+        for(int i=2;i<n+1;i++){
+            StringBuilder tmp=new StringBuilder();
+            int count=0;
+            for(int j=0;j<res.length();j++){
+                if(j==0||res.charAt(j)==res.charAt(j-1)){
+                    count++;
+                }else {
+                    tmp.append(count).append(res.charAt(j-1));
+                    count=1;
+                }
+            }
+            tmp.append(count).append(res.charAt(res.length()-1));
+            res=tmp.toString();
+        }
+        System.out.println(res);
+        return res;
+    }
+
     public static void main(String args[]){
         Solution2 solution2=new Solution2();
 
@@ -243,7 +292,10 @@ public class Solution2 {
 //        for(int i=0;i<nums.length;i++){
 //            System.out.println(nums[i]);
 //        }
-        char[][] board=new char[9][];
-        solution2.isValidSudoku(board);
+//        char[][] board=new char[9][];
+//        solution2.isValidSudoku(board);
+//        int[] nums={0,1,0,2,1,0,1,3,2,1,2,1};
+//        solution2.trap(nums);
+        solution2.countAndSay(5);
     }
 }
