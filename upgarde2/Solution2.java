@@ -1,9 +1,6 @@
 package leetcode;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 public class Solution2 {
     //33.搜索旋转排序数组
@@ -276,6 +273,53 @@ public class Solution2 {
         return res;
     }
 
+    //39. 组合总和
+    public List<List<Integer>> combinationSum(int[] candidates, int target) {
+        Stack<Integer> tmp=new Stack<>();
+        List<List<Integer>> res=new ArrayList<>();
+        Arrays.sort(candidates);
+        recursionForCombinationSum(candidates,target,0,tmp,res);
+
+        return res;
+    }
+
+    public void recursionForCombinationSum(int[] candidates, int target,int start, Stack<Integer> tmp, List<List<Integer>> res){
+        if(target==0){
+            res.add(new ArrayList<>(tmp));
+            return;
+        }
+        for(int i=start;i<candidates.length&&target-candidates[i]>=0;i++){
+            tmp.add(candidates[i]);
+            recursionForCombinationSum(candidates,target-candidates[i],i,tmp,res);
+            tmp.pop();
+        }
+
+    }
+
+    //40. 组合总和 II
+    public List<List<Integer>> combinationSum2(int[] candidates, int target) {
+        Stack<Integer> tmp=new Stack<>();
+        List<List<Integer>> res=new ArrayList<>();
+        Arrays.sort(candidates);
+        recursionCombinationSum2(candidates,target,0,tmp,res);
+
+        return res;
+    }
+
+    public void recursionCombinationSum2(int[] candidates,int target,int start,Stack<Integer> tmp,List<List<Integer>> res){
+        if(target==0){
+            res.add(new ArrayList<>(tmp));
+            return;
+        }
+        for(int i=start;i<candidates.length&&target-candidates[i]>=0;i++){
+            if(!(i>start&&candidates[i]==candidates[i-1])){
+                tmp.add(candidates[i]);
+                recursionCombinationSum2(candidates,target-candidates[i],i+1,tmp,res);
+                tmp.pop();
+            }
+        }
+    }
+
     public static void main(String args[]){
         Solution2 solution2=new Solution2();
 
@@ -296,6 +340,9 @@ public class Solution2 {
 //        solution2.isValidSudoku(board);
 //        int[] nums={0,1,0,2,1,0,1,3,2,1,2,1};
 //        solution2.trap(nums);
-        solution2.countAndSay(5);
+//        solution2.countAndSay(5);
+
+        int[] candidates={2,3,6,7};
+        solution2.combinationSum2(candidates,8);
     }
 }
